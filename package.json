@@ -11,5 +11,8 @@
         "type": "git",
         "url": "https://github.com/juancancela/nodegraph.git"
     },
+    "dependencies":{
+        "mocha": "^2.2.4"
+    },
     "engines": { "node": "*" }
 }
