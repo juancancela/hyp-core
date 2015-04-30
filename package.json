@@ -9,7 +9,7 @@
     "keywords": ["graph"],
     "repository" : {
         "type": "git",
-        "url": "https://github.com/juancancela/graph.git"
+        "url": "https://github.com/juancancela/nodegraph.git"
     },
     "engines": { "node": "*" }
 }
