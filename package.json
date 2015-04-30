@@ -1,0 +1,15 @@
+{
+    "name": "graph",
+    "version": "0.0.1",
+    "description": "graph",
+    "preferGlobal": "true",
+    "main": "index.js",
+    "bin": { "graph": "index.js" },
+    "author": "Juan Carlos CAncela",
+    "keywords": ["graph"],
+    "repository" : {
+        "type": "git",
+        "url": "https://github.com/juancancela/graph.git"
+    },
+    "engines": { "node": "*" }
+}
