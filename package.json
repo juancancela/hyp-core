@@ -1,15 +1,15 @@
 {
-    "name": "nodegraph",
+    "name": "hyp-core",
     "version": "0.0.1",
-    "description": "graph",
+    "description": "hyp",
     "preferGlobal": "true",
     "main": "index.js",
-    "bin": { "graph": "index.js" },
+    "bin": { "hyp": "index.js" },
     "author": "Juan Carlos CAncela",
-    "keywords": ["graph"],
+    "keywords": ["hyp"],
     "repository" : {
         "type": "git",
-        "url": "https://github.com/juancancela/nodegraph.git"
+        "url": "https://github.com/juancancela/hyp-core.git"
     },
     "dependencies":{
         "mocha": "^2.2.4"
