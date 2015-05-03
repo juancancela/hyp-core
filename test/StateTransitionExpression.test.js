@@ -1,6 +1,5 @@
 var assert = require("assert");
 var StateTransitionExpression = require('../index').StateTransitionExpression;
-var m = require('../lib/constants');
 
 describe('State Transition Expression', function () {
     describe('Validate expression creation without blank spaces', function(){
@@ -26,7 +25,7 @@ describe('State Transition Expression', function () {
             try{
                 new StateTransitionExpression(null);
             } catch(e){
-                assert.equal(e.message, m.ERR_MSG_5);
+                assert.equal(e.message, "ERROR: StateTransitionExpression cannot be null or empty");
                 return;
             }
             assert.fail();
@@ -39,7 +38,7 @@ describe('State Transition Expression', function () {
                 var invalidExpressionMissedToken = "initialState finalState";
                 new StateTransitionExpression(invalidExpressionMissedToken);
             } catch(e){
-                assert.equal(e.message, m.ERR_MSG_6);
+                assert.equal(e.message, "ERROR: StateTransitionExpression misses -> character. Expected structure: OPERATION_NAME:INITIAL_STATE->FINAL_STATE");
                 return;
             }
             assert.fail();
@@ -52,7 +51,7 @@ describe('State Transition Expression', function () {
                 var invalidExpressionMissedOperation = "->finalState";
                 new StateTransitionExpression(invalidExpressionMissedOperation);
             } catch(e){
-                assert.equal(e.message, m.ERR_MSG_12);
+                assert.equal(e.message, "ERROR: StateTransitionExpression misses : character. Expected structure: OPERATION_NAME:INITIAL_STATE->FINAL_STATE");
                 return;
             }
             assert.fail();
@@ -65,7 +64,7 @@ describe('State Transition Expression', function () {
                 var invalidExpressionMissedFinalState = "operation:initialState->";
                 new StateTransitionExpression(invalidExpressionMissedFinalState);
             } catch(e){
-                assert.equal(e.message, m.ERR_MSG_8);
+                assert.equal(e.message, "ERROR: StateTransitionExpression misses FINAL_STATE. Expected structure: OPERATION_NAME:INITIAL_STATE->FINAL_STATE");
                 return;
             }
             assert.fail();
