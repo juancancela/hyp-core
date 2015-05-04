@@ -2,12 +2,11 @@ var assert = require("assert");
 var Property = require('../index').Property;
 var Validation = require('../index').Validation;
 
-describe('Property tests', function () {
+describe('Property', function () {
     it('should set a value of a property if no validations provided', function () {
         var propertyName = "propertyName";
         var propertyValue = "propertyValue";
         var property = new Property(propertyName, propertyValue, null);
-
         assert.equal(propertyName, property.getName());
         assert.equal(propertyValue, property.getValue());
     });

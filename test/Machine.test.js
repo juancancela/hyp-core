@@ -4,12 +4,12 @@ var Transition = require('../index').Transition;
 var Operation = require('../index').Operation;
 var Property  = require('../index').Property;
 
-describe('Machine tests', function () {
+describe('Machine', function () {
     describe('Machine name', function () {
         it('should set name given on constructor on property machine.name', function () {
             var machineName = "machineName";
             var machine = new Machine(machineName);
-            assert.equal(machine.name, machineName);
+            assert.equal(machine.getName(), machineName);
         });
 
         it('should throw an exception if a machine name is not provided', function () {
