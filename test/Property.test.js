@@ -84,7 +84,7 @@ describe('Property', function () {
         assert.fail();
     });
 
-    it('should throw an error if the given value on constructor does not accomplish defined validation', function(){
+    it('should throw an error if the given value on constructor does not accomplish defined validation', function () {
         var propertyName = "propertyName";
         var propertyValue = 1;
         var validationName = "validationName";

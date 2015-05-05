@@ -7,7 +7,7 @@ describe('Transition', function () {
         var initialState = "INITIAL_STATE";
         var finalState = "FINAL_STATE";
         var name = "operationName";
-        var implementation = function(){
+        var implementation = function () {
             return "operation result";
         };
 
@@ -18,24 +18,24 @@ describe('Transition', function () {
         assert.equal(finalState, transition.getFinalState());
     });
 
-    it('should fail to create a Transition object if the provided operation is not of type Operation', function(){
+    it('should fail to create a Transition object if the provided operation is not of type Operation', function () {
         var initialState = "INITIAL_STATE";
         var finalState = "FINAL_STATE";
-        try{
+        try {
             new Transition(initialState, finalState, []);
-        } catch(e){
+        } catch (e) {
             assert.equal("ERROR: Operations must be of type Operation", e.message);
             return;
         }
         assert.fail();
     });
 
-    it('should fail to create a Transition object if the provided operation is null', function(){
+    it('should fail to create a Transition object if the provided operation is null', function () {
         var initialState = "INITIAL_STATE";
         var finalState = "FINAL_STATE";
-        try{
+        try {
             new Transition(initialState, finalState, null);
-        } catch(e){
+        } catch (e) {
             assert.equal("ERROR: Operations must be of type Operation", e.message);
             return;
         }
