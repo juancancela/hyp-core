@@ -73,17 +73,6 @@ describe('Property', function () {
         assert.fail();
     });
 
-    it('should throw an error if no value is provided for property', function () {
-        try {
-            new Property("propertyName", null, null);
-        } catch (e) {
-            assert.equal("ERROR: Value must be provided when constructing a Property", e.message);
-            assert.equal(1, 1);
-            return;
-        }
-        assert.fail();
-    });
-
     it('should throw an error if the given value on constructor does not accomplish defined validation', function () {
         var propertyName = "propertyName";
         var propertyValue = 1;

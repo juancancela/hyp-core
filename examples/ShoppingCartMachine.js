@@ -23,31 +23,56 @@ var Property = require('../index').Property;
  *
  * @constructor
  */
-function ShoppingCartMachineExampleSimplestScenario(){
-    var addItemOperation = new Operation("addItem", function(machine, parameters, cb){
-        cb(null, machine.getProperties["item"] = "Argentina->Brasil");
+function ShoppingCartMachineExampleSimplest(){
+
+    var addItemOperation = new Operation("addItem", function(machine, parameters, finalState, cb){
+        var err = null;
+        machine.getProperties()["item"].setValue("Argentina->Brasil");
+        if(!err){
+            cb(null, machine.setCurrentState(finalState));
+        } else {
+            cb(err, null);
+        }
     });
 
-    var priceOperation = new Operation("price", function(machine, parameters, cb){
-        cb(null, machine.getProperties["priced"] = true);
+    var priceOperation = new Operation("price", function(machine, parameters, finalState, cb){
+        var err = null;
+        machine.getProperties()["priced"].setValue(true);
+        if(!err){
+            cb(null, machine.setCurrentState(finalState));
+        } else {
+            cb(err, null);
+        }
     });
 
-    var checkOutOperation = new Operation("checkOut", function(machine, parameters, cb){
-        cb(null, machine.getProperties["checkedOut"] = true);
+    var checkOutOperation = new Operation("checkOut", function(machine, parameters, finalState, cb){
+        var err = null;
+        machine.getProperties()["checkedOut"].setValue(true);
+        if(!err){
+            cb(null, machine.setCurrentState(finalState));
+        } else {
+            cb(err, null);
+        }
     });
 
-    var tr1 = new Transition("NON_PRICEABLE", "PRICEABLE", addItemOperation);
-    var tr2 = new Transition("PRICEABLE", "PRICED", priceOperation);
-    var tr3 = new Transition("PRICED", "CHECKED_OUT", checkOutOperation);
+    var fromNonPriceableToPriceable = new Transition("NON_PRICEABLE", "PRICEABLE", addItemOperation);
+    var fromPriceableToPriced = new Transition("PRICEABLE", "PRICED", priceOperation);
+    var fromPricedToCheckedOut = new Transition("PRICED", "CHECKED_OUT", checkOutOperation);
 
-    var shoppingCartMachine = new Machine("Shopping Cart Machine", "NON_PRICEABLE", [tr1,tr2,tr3], null);
+    var shoppingCartMachine = new Machine("Shopping Cart Machine", "NON_PRICEABLE",
+        [fromNonPriceableToPriceable,fromPriceableToPriced,fromPricedToCheckedOut], null);
 
     shoppingCartMachine.addProperty(new Property("item", null, null));
     shoppingCartMachine.addProperty(new Property("priced", false, null));
     shoppingCartMachine.addProperty(new Property("checkedOut", false, null));
+
+    return shoppingCartMachine;
 }
 
-
+/**
+ * Public Interface
+ * @type {{ShoppingCartMachineExampleSimplest: ShoppingCartMachineExampleSimplest}}
+ */
 module.exports = {
-    ShoppingCartMachineExampleSimplestScenario : ShoppingCartMachineExampleSimplestScenario
+    ShoppingCartMachineExampleSimplest : ShoppingCartMachineExampleSimplest
 };

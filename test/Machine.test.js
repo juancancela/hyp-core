@@ -73,7 +73,7 @@ describe('Machine', function () {
             var transitionFinalState = "PRICEABLE";
             var operationName = "addItem";
             var machine = new Machine(machineName, "NON_PRICEABLE");
-            var transitionOperation = new Operation(operationName, function (machine, params, cb) {
+            var transitionOperation = new Operation(operationName, function (machine, params, finalState, cb) {
                 cb(null, machine.getProperties()["description"].setValue("mutated value"));
             });
 
