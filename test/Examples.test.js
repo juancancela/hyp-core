@@ -1,8 +1,12 @@
 var assert = require("assert");
-var ShoppingCartMachine = require('../examples/ShoppingCartMachine').ShoppingCartMachineExampleSimplest;
+var ShoppingCartMachine = require('../examples/ShoppingCartMachine').ShoppingCartMachine;
+var ShoppingCartMachineWithComplexValues = require('../examples/ShoppingCartMachine').ShoppingCartMachineWithComplexValues;
+var CartItem = require('../examples/ShoppingCartMachine').CartItem;
+var _isArrayOfCartItems = require('../examples/ShoppingCartMachine')._isArrayOfCartItems;
 
 describe('Examples', function () {
     var machine = new ShoppingCartMachine();
+    var machineWithComplexValue = new ShoppingCartMachineWithComplexValues();
 
     it('should successfully construct a simple shopping cart machine', function () {
         assert.equal("NON_PRICEABLE", machine.getCurrentState(), "Initial State must be NON_PRICEABLE");
@@ -41,6 +45,12 @@ describe('Examples', function () {
             assert.equal(true, machine.getProperties()["checkedOut"].getValue(), "CheckedOut machine property was successfully updated");
             assert.equal("CHECKED_OUT", machine.getCurrentState(), "Machine successfully transitioned from PRICED to CHECKED_OUT");
         });
+    });
+
+    it('should be able to add a property value that is an array and of a particular type', function(){
+        machineWithComplexValue.getProperties()["items"].setValue([new CartItem("Argentina", "Brasil")]);
+        assert.equal(1, machineWithComplexValue.getProperties()["items"].getValue().length);
+        assert.equal(true, machineWithComplexValue.getProperties()["items"].getValue()[0] instanceof CartItem);
     });
 });
 

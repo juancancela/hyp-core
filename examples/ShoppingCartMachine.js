@@ -1,8 +1,9 @@
-var assert = require("assert");
 var Machine = require('../index').Machine;
 var Transition = require('../index').Transition;
 var Operation = require('../index').Operation;
 var Property = require('../index').Property;
+var Validation = require('../index').Validation;
+var it = require('../lib/utils/validations');
 
 /**
  * In this example, it will be modelized a fictional shopping cart resource as a Machine.
@@ -23,7 +24,7 @@ var Property = require('../index').Property;
  *
  * @constructor
  */
-function ShoppingCartMachineExampleSimplest(){
+function ShoppingCartMachine(){
 
     var addItemOperation = new Operation("addItem", function(machine, parameters, finalState, cb){
         var err = null;
@@ -70,9 +71,41 @@ function ShoppingCartMachineExampleSimplest(){
 }
 
 /**
+ * Following previous machine composition, in this case more complex values, with validations, are added to the machine.
+ * In particular, item will be changed to be a list of items, and each item will be of type CartItem.
+ * Machine structure wont be affected.
+ *
+ * @constructor
+ */
+function ShoppingCartMachineWithComplexValues(){
+    var machine = ShoppingCartMachine();
+    machine.addProperty(new Property("items", null, [it.isArray, _isArrayOfCartItems]));
+    return machine;
+}
+
+var CartItem = function(origin, destiny){
+    this.origin = origin;
+    this.destiny = destiny;
+};
+
+var _isArrayOfCartItems = new Validation("isArrayOfCartItems", function(items){
+    if(!items || !it.isArray.validate(items)) return false;
+    var isArrayOfCartItems = true;
+    items.forEach(function(item){
+        if(!(item instanceof CartItem)){
+            isArrayOfCartItems = false;
+        }
+    });
+    return isArrayOfCartItems;
+});
+
+/**
  * Public Interface
  * @type {{ShoppingCartMachineExampleSimplest: ShoppingCartMachineExampleSimplest}}
  */
 module.exports = {
-    ShoppingCartMachineExampleSimplest : ShoppingCartMachineExampleSimplest
+    ShoppingCartMachine : ShoppingCartMachine,
+    ShoppingCartMachineWithComplexValues : ShoppingCartMachineWithComplexValues,
+    CartItem : CartItem,
+    _isArrayOfCartItems : _isArrayOfCartItems
 };
