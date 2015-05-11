@@ -4,4 +4,6 @@
 
 # Examples
 
+*Shopping Cart
+
 # Use Cases
