@@ -21,34 +21,34 @@ describe('Utilities->String Utilities', function () {
 describe('Utilities->Object decoration', function () {
 
     var objectToBeDecorated = {};
-    var simplePropertyTuple = new Property("age", null, null);
-    var arrayPropertyTuple = new Property("invoices", null, validations.isArray);
-    var arrayPropertyNoLetterSTuple = new Property("people", null, validations.isArray);
+    var simpleProperty = new Property("age", null, null);
+    var arrayProperty = new Property("invoices", null, validations.isArray);
+    var arrayPropertyNoLetterS = new Property("people", null, validations.isArray);
 
-    objectToBeDecorated = utils.decorateWithGettersAndSetters(objectToBeDecorated, [simplePropertyTuple, arrayPropertyTuple, arrayPropertyNoLetterSTuple]);
+    objectToBeDecorated = utils.decorateWithGettersAndSetters(objectToBeDecorated, [simpleProperty, arrayProperty, arrayPropertyNoLetterS]);
 
-    it('#decorateWithGettersAndSetters(objectToBeDecorated, propertyTuples) should return an object with a getter and a setter for a given non array property', function () {
+    it('#decorateWithGettersAndSetters(objectToBeDecorated, properties) should return an object with a getter and a setter for a given non array property', function () {
         assert.equal("function", typeof objectToBeDecorated.getAge, "Creates a getter for the property");
         assert.equal("function", typeof objectToBeDecorated.setAge, "Creates a setter for the array property");
     });
 
-    it('#decorateWithGettersAndSetters(objectToBeDecorated, propertyTuples) should return an object with a getter and a setter for a given array property', function () {
+    it('#decorateWithGettersAndSetters(objectToBeDecorated, properties) should return an object with a getter and a setter for a given array property', function () {
         assert.equal("function", typeof objectToBeDecorated.getInvoices, "Creates a getter for the array property");
         assert.equal("function", typeof objectToBeDecorated.setInvoices, "Creates a setter for the array property");
         assert.equal("function", typeof objectToBeDecorated.addInvoice, "Adds a helper function to add an item to an array property");
     });
 
-    it('#decorateWithGettersAndSetters(objectToBeDecorated, propertyTuples) should not remove last "s" character from array item when generating add operation if the property name does not finish with "s"', function () {
+    it('#decorateWithGettersAndSetters(objectToBeDecorated, properties) should not remove last "s" character from array item when generating add operation if the property name does not finish with "s"', function () {
         assert.equal("undefined", typeof objectToBeDecorated.addPeopl, "Should not follow logic of removing last character if property name does not finish with S");
         assert.equal("function", typeof objectToBeDecorated.addPeople, "Should generate an add function with the very same capitalized name of the property");
     });
 
-    it('#decorateWithGettersAndSetters(objectToBeDecorated, propertyTuples) should provide valid getters and setters for the required properties', function () {
+    it('#decorateWithGettersAndSetters(objectToBeDecorated, properties) should provide valid getters and setters for the required properties', function () {
         objectToBeDecorated.setAge("45");
         assert.equal("45", objectToBeDecorated.getAge());
     });
 
-    it('#decorateWithGettersAndSetters(objectToBeDecorated, propertyTuples) should return null if object to be decorated or given properties are null or undefined', function () {
+    it('#decorateWithGettersAndSetters(objectToBeDecorated, properties) should return null if object to be decorated or given properties are null or undefined', function () {
         assert.equal(null, utils.decorateWithGettersAndSetters(null, null));
         assert.equal(null, utils.decorateWithGettersAndSetters(null, []));
         assert.equal(null, utils.decorateWithGettersAndSetters(null, undefined));
