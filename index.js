@@ -8,5 +8,6 @@ module.exports = {
     StateTransitionExpression: require('./lib/StateTransitionExpression').StateTransitionExpression,
     Operation: require('./lib/Operation').Operation,
     Property: require('./lib/Property').Property,
-    Validation: require('./lib/Validation').Validation
+    Validation: require('./lib/Validation').Validation,
+    validations : require('./lib/utils/validations')
 };

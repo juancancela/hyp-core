@@ -1,5 +1,7 @@
 var assert = require("assert");
 var utils = require('../lib/utils/utilities');
+var Property = require('../index').Property;
+var validations = require('../index').validations;
 
 describe('Utilities->String Utilities', function () {
     it('#capitalizeFirstLetter(string) should return null if the given string is a null', function () {
@@ -19,9 +21,9 @@ describe('Utilities->String Utilities', function () {
 describe('Utilities->Object decoration', function () {
 
     var objectToBeDecorated = {};
-    var simplePropertyTuple = {name:"age", isArray:false};
-    var arrayPropertyTuple = {name:"invoices", isArray:true};
-    var arrayPropertyNoLetterSTuple = {name:"people", isArray:true};
+    var simplePropertyTuple = new Property("age", null, null);
+    var arrayPropertyTuple = new Property("invoices", null, validations.isArray);
+    var arrayPropertyNoLetterSTuple = new Property("people", null, validations.isArray);
 
     objectToBeDecorated = utils.decorateWithGettersAndSetters(objectToBeDecorated, [simplePropertyTuple, arrayPropertyTuple, arrayPropertyNoLetterSTuple]);
 
