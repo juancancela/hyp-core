@@ -47,7 +47,7 @@ describe('Examples', function () {
         });
     });
 
-    it('should be able to add a property value that is an array and of a particular type', function(){
+    it('should be able to add a property value that is an array of a particular type', function(){
         machineWithComplexValue.getProperties()["items"].setValue([new CartItem("Argentina", "Brasil")]);
         assert.equal(1, machineWithComplexValue.getProperties()["items"].getValue().length);
         assert.equal(true, machineWithComplexValue.getProperties()["items"].getValue()[0] instanceof CartItem);

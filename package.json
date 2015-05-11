@@ -5,7 +5,7 @@
   "preferGlobal": "true",
   "main": "index.js",
   "bin": {"hyp": "index.js"},
-  "author": "Juan Carlos CAncela",
+  "author": "Juan Carlos Cancela",
   "keywords": ["hyp"],
   "repository": {
     "type": "git",
