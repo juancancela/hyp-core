@@ -9,5 +9,5 @@ module.exports = {
     Operation: require('./lib/Operation').Operation,
     Property: require('./lib/Property').Property,
     Validation: require('./lib/Validation').Validation,
-    validations : require('./lib/utils/validations')
+    validations: require('./lib/utils/validations')
 };

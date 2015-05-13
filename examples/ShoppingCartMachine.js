@@ -24,32 +24,32 @@ var it = require('../lib/utils/validations');
  *
  * @constructor
  */
-function ShoppingCartMachine(){
+function ShoppingCartMachine() {
 
-    var addItemOperation = new Operation("addItem", function(machine, parameters, finalState, cb){
+    var addItemOperation = new Operation("addItem", function (machine, parameters, finalState, cb) {
         var err = null;
         machine.getProperties()["item"].setValue("Argentina->Brasil");
-        if(!err){
+        if (!err) {
             cb(null, machine.setCurrentState(finalState));
         } else {
             cb(err, null);
         }
     });
 
-    var priceOperation = new Operation("price", function(machine, parameters, finalState, cb){
+    var priceOperation = new Operation("price", function (machine, parameters, finalState, cb) {
         var err = null;
         machine.getProperties()["priced"].setValue(true);
-        if(!err){
+        if (!err) {
             cb(null, machine.setCurrentState(finalState));
         } else {
             cb(err, null);
         }
     });
 
-    var checkOutOperation = new Operation("checkOut", function(machine, parameters, finalState, cb){
+    var checkOutOperation = new Operation("checkOut", function (machine, parameters, finalState, cb) {
         var err = null;
         machine.getProperties()["checkedOut"].setValue(true);
-        if(!err){
+        if (!err) {
             cb(null, machine.setCurrentState(finalState));
         } else {
             cb(err, null);
@@ -61,7 +61,7 @@ function ShoppingCartMachine(){
     var fromPricedToCheckedOut = new Transition("PRICED", "CHECKED_OUT", checkOutOperation);
 
     var shoppingCartMachine = new Machine("Shopping Cart Machine", "NON_PRICEABLE",
-        [fromNonPriceableToPriceable,fromPriceableToPriced,fromPricedToCheckedOut], null);
+        [fromNonPriceableToPriceable, fromPriceableToPriced, fromPricedToCheckedOut], null);
 
     shoppingCartMachine.addProperty(new Property("item", null, null));
     shoppingCartMachine.addProperty(new Property("priced", false, null));
@@ -77,22 +77,22 @@ function ShoppingCartMachine(){
  *
  * @constructor
  */
-function ShoppingCartMachineWithComplexValues(){
+function ShoppingCartMachineWithComplexValues() {
     var machine = ShoppingCartMachine();
     machine.addProperty(new Property("items", null, [it.isArray, _isArrayOfCartItems]));
     return machine;
 }
 
-var CartItem = function(origin, destiny){
+var CartItem = function (origin, destiny) {
     this.origin = origin;
     this.destiny = destiny;
 };
 
-var _isArrayOfCartItems = new Validation("isArrayOfCartItems", function(items){
-    if(!items || !it.isArray.validate(items)) return false;
+var _isArrayOfCartItems = new Validation("isArrayOfCartItems", function (items) {
+    if (!items || !it.isArray.validate(items)) return false;
     var isArrayOfCartItems = true;
-    items.forEach(function(item){
-        if(!(item instanceof CartItem)){
+    items.forEach(function (item) {
+        if (!(item instanceof CartItem)) {
             isArrayOfCartItems = false;
         }
     });
@@ -104,8 +104,8 @@ var _isArrayOfCartItems = new Validation("isArrayOfCartItems", function(items){
  * @type {{ShoppingCartMachineExampleSimplest: ShoppingCartMachineExampleSimplest}}
  */
 module.exports = {
-    ShoppingCartMachine : ShoppingCartMachine,
-    ShoppingCartMachineWithComplexValues : ShoppingCartMachineWithComplexValues,
-    CartItem : CartItem,
-    _isArrayOfCartItems : _isArrayOfCartItems
+    ShoppingCartMachine: ShoppingCartMachine,
+    ShoppingCartMachineWithComplexValues: ShoppingCartMachineWithComplexValues,
+    CartItem: CartItem,
+    _isArrayOfCartItems: _isArrayOfCartItems
 };
