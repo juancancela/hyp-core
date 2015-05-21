@@ -101,7 +101,6 @@ var _isArrayOfCartItems = new Validation("isArrayOfCartItems", function (items) 
 
 /**
  * Public Interface
- * @type {{ShoppingCartMachineExampleSimplest: ShoppingCartMachineExampleSimplest}}
  */
 module.exports = {
     ShoppingCartMachine: ShoppingCartMachine,
