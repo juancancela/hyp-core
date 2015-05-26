@@ -65,6 +65,8 @@ describe('Machine', function () {
             assert.equal(property.getName(), machine.getProperties()["description"].getName());
             assert.equal(property.getValue(), machine.getProperties()["description"].getValue());
             assert.equal(null, machine.getProperties()["description"].getValidations());
+            assert.equal(typeof machine.getDescription, "function", "it should be created a getter for description property");
+            assert.equal(typeof machine.setDescription, "function", "it should be created a setter for description property");
         });
 
         it('should be possible to mutate the state of a machine property through a transition operation', function () {
