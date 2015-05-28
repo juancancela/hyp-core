@@ -26,44 +26,52 @@ var it = require('../lib/utils/validations');
  */
 function ShoppingCartMachine() {
 
-    var addItemOperation = new Operation("addItem", function (machine, parameters, finalState, cb) {
+    var addItemOperation = new Operation("addItem", function (machine, parameters, transition, cb) {
         var err = null;
-        machine.getProperties()["item"].setValue("Argentina->Brasil");
+        if(!machine.getProperties()["items"].getValue()) machine.getProperties()["items"].setValue([]);
+        machine.getProperties()["items"].getValue().push("Argentina->Brasil");
         if (!err) {
-            cb(null, machine.setCurrentState(finalState));
+            cb(null, machine.setCurrentState(transition.getFinalState(machine)));
         } else {
             cb(err, null);
         }
     });
 
-    var priceOperation = new Operation("price", function (machine, parameters, finalState, cb) {
+    var priceOperation = new Operation("price", function (machine, parameters, transition, cb) {
         var err = null;
         machine.getProperties()["priced"].setValue(true);
         if (!err) {
-            cb(null, machine.setCurrentState(finalState));
+            cb(null, machine.setCurrentState(transition.getFinalState(machine)));
         } else {
             cb(err, null);
         }
     });
 
-    var checkOutOperation = new Operation("checkOut", function (machine, parameters, finalState, cb) {
+    var checkOutOperation = new Operation("checkOut", function (machine, parameters, transition, cb) {
         var err = null;
         machine.getProperties()["checkedOut"].setValue(true);
         if (!err) {
-            cb(null, machine.setCurrentState(finalState));
+            cb(null, machine.setCurrentState(transition.getFinalState(machine)));
         } else {
             cb(err, null);
         }
     });
 
-    var fromNonPriceableToPriceable = new Transition("NON_PRICEABLE", "PRICEABLE", addItemOperation);
-    var fromPriceableToPriced = new Transition("PRICEABLE", "PRICED", priceOperation);
-    var fromPricedToCheckedOut = new Transition("PRICED", "CHECKED_OUT", checkOutOperation);
+    var addItemInitialState = function(machine){
+        if(!machine.getProperties()["items"].getValue() || machine.getProperties()["items"].getValue().length == 0 ) return "NON_PRICEABLE";
+        return "PRICEABLE";
+    };
+
+    var addItemFinalState = function(){return "PRICEABLE"};
+
+    var addItemTransition = new Transition(addItemInitialState, addItemFinalState, addItemOperation);
+    var priceTransition = new Transition(function(){return "PRICEABLE"}, function(){return "PRICED"}, priceOperation);
+    var checkOutTransition = new Transition(function(){return "PRICED"}, function(){return "CHECKED_OUT"}, checkOutOperation);
 
     var shoppingCartMachine = new Machine("Shopping Cart Machine", "NON_PRICEABLE",
-        [fromNonPriceableToPriceable, fromPriceableToPriced, fromPricedToCheckedOut], null);
+        [addItemTransition, priceTransition, checkOutTransition], null);
 
-    shoppingCartMachine.addProperty(new Property("item", null, null));
+    shoppingCartMachine.addProperty(new Property("items", null, null));
     shoppingCartMachine.addProperty(new Property("priced", false, null));
     shoppingCartMachine.addProperty(new Property("checkedOut", false, null));
 
@@ -78,8 +86,40 @@ function ShoppingCartMachine() {
  * @constructor
  */
 function ShoppingCartMachineWithComplexValues() {
-    var machine = ShoppingCartMachine();
+    var machine = new ShoppingCartMachine();
     machine.addProperty(new Property("items", null, [it.isArray, _isArrayOfCartItems]));
+    return machine;
+}
+
+
+/**
+ * In this example, a new operation and transition are added to the machine: removeItemOperation, and a transition
+ * that now includes a transition with a dynamic final state that based on a property of the machine (item) determines
+ * if its final state is PRICEABLE or NON_PRICEABLE. Essentially, if there's no items, final state must be NON_PRICEABLE
+ * , on the other hand, if there are 1 or more items, final state of transition must be PRICEABLE.
+ * @returns {*}
+ * @constructor
+ */
+function ShoppingCartMachineWithMutableStates() {
+    var machine = new ShoppingCartMachineWithComplexValues();
+
+    var removeItemOperation = new Operation("removeItem", function (machine, parameters, transition, cb) {
+        var err = null;
+        machine.getProperties()["items"].getValue().pop();
+        if (!err) {
+            cb(null, machine.setCurrentState(transition.getFinalState(machine)));
+        } else {
+            cb(err, null);
+        }
+    });
+
+    var finalState = function(machine){
+      if(machine.getProperties()["items"].getValue().length == 0) return "NON_PRICEABLE";
+      return "PRICEABLE";
+    };
+
+    machine._transitions.push(new Transition("NON_PRICEABLE", finalState, removeItemOperation));
+
     return machine;
 }
 
@@ -105,6 +145,7 @@ var _isArrayOfCartItems = new Validation("isArrayOfCartItems", function (items) 
 module.exports = {
     ShoppingCartMachine: ShoppingCartMachine,
     ShoppingCartMachineWithComplexValues: ShoppingCartMachineWithComplexValues,
+    ShoppingCartMachineWithMutableStates: ShoppingCartMachineWithMutableStates,
     CartItem: CartItem,
     _isArrayOfCartItems: _isArrayOfCartItems
 };
