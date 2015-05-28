@@ -60,7 +60,7 @@ describe('Examples', function () {
         machineWithMutableState.run("removeItem", null, function(err, response){
           assert.equal("PRICEABLE", machineWithMutableState.getCurrentState(), "If there's two items, removing one still keeps machine on PRICEABLE state");
             machineWithMutableState.run("removeItem", null, function(err, response){
-                assert.equal("PRICEABLE", machineWithMutableState.getCurrentState(), "Removing last item would move current state to NON_PRICEABLE");
+                assert.equal("NON_PRICEABLE", machineWithMutableState.getCurrentState(), "Removing last item would move current state to NON_PRICEABLE");
             });
         });
     });

@@ -64,11 +64,16 @@ function ShoppingCartMachine() {
 
     var addItemFinalState = function(){return "PRICEABLE"};
 
+    var machineInitialState = function(machine){
+        if(!machine.getProperties()["items"].getValue() || machine.getProperties()["items"].getValue().length == 0 ) return "NON_PRICEABLE";
+        return "PRICEABLE";
+    };
+
     var addItemTransition = new Transition(addItemInitialState, addItemFinalState, addItemOperation);
     var priceTransition = new Transition(function(){return "PRICEABLE"}, function(){return "PRICED"}, priceOperation);
     var checkOutTransition = new Transition(function(){return "PRICED"}, function(){return "CHECKED_OUT"}, checkOutOperation);
 
-    var shoppingCartMachine = new Machine("Shopping Cart Machine", "NON_PRICEABLE",
+    var shoppingCartMachine = new Machine("Shopping Cart Machine", machineInitialState,
         [addItemTransition, priceTransition, checkOutTransition], null);
 
     shoppingCartMachine.addProperty(new Property("items", null, null));
@@ -113,12 +118,17 @@ function ShoppingCartMachineWithMutableStates() {
         }
     });
 
-    var finalState = function(machine){
+    var removeItemInitialState = function(machine){
+        if(machine.getProperties()["items"].getValue().length == 0) return "NON_PRICEABLE";
+        return "PRICEABLE";
+    };
+
+    var removeItemFinalState = function(machine){
       if(machine.getProperties()["items"].getValue().length == 0) return "NON_PRICEABLE";
       return "PRICEABLE";
     };
 
-    machine._transitions.push(new Transition("NON_PRICEABLE", finalState, removeItemOperation));
+    machine._transitions.push(new Transition(removeItemInitialState, removeItemFinalState, removeItemOperation));
 
     return machine;
 }
